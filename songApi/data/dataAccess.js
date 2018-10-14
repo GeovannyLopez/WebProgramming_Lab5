@@ -1,4 +1,5 @@
-var _ = require('lodash');
+let _ = require('lodash');
+let songModel = require('../models/songModel');
 
 var songs = [
     {
@@ -69,8 +70,13 @@ var songs = [
 ];
 
 class dataAccess {
-    getAll() {
-        return { status: 'success', songs: songs }
+    getAll(callback) {
+        songModel.find((err, songs) => {
+            console.log(songs);
+            console.log(err);
+            if (err) throw err;
+            callback('success', songs)
+          });
     }
     getSong(id) {
         var song = songs.find((song) => {

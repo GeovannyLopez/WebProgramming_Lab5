@@ -20,16 +20,17 @@ router.get('/:id', function (req, res, next) {
 
 /* GET songs listing. */
 router.get('/', function (req, res, next) {
-    var result = dataAccess.getAll();
-    if (result.status === "success") {
-        res.status(200).json(result.songs);
-        return;
-    }
-    else {
-        res.status(404).json(
-            { status: "error" }
-        );
-    }
+    dataAccess.getAll(function(status, songs){
+        if (status === "success") {
+            res.status(200).json(songs);
+            return;
+        }
+        else {
+            res.status(404).json(
+                { status: "error" }
+            );
+        }
+    });
 });
 
 router.post('/', function (req, res, next) {
