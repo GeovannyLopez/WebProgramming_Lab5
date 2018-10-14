@@ -1,5 +1,6 @@
 let _ = require('lodash');
-let songModel = require('../models/songModel');
+let SongModel = require('../models/songModel');
+let connection = require('./connection');
 
 var songs = [
     {
@@ -71,9 +72,8 @@ var songs = [
 
 class dataAccess {
     getAll(callback) {
-        songModel.find((err, songs) => {
-            console.log(songs);
-            console.log(err);
+        console.log('trying');
+        SongModel.find((err, songs) => {
             if (err) throw err;
             callback('success', songs)
           });

@@ -20,6 +20,6 @@ let songSchema = new Schema(
     }
 );
 
-let SongModel = mongoose.model('Songs', songSchema);
+let SongModel = mongoose.model('Multimedia', songSchema, 'Multimedia');
 
 module.exports = SongModel;
