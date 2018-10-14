@@ -4,18 +4,17 @@ const dataAccess = require('../data/dataAccess')
 
 /* GET specific song. */
 router.get('/:id', function (req, res, next) {
-    var result = dataAccess.getSong(req.params.id);
-
-    if (result.status === "success") {
-        res.status(200).json(result.song);
-        return;
-    }
-    else {
-        res.status(404).json(
-            { status: "error" }
-        );
-    }
-
+    dataAccess.getSong(req.params.id, function(status, song){
+        if (status === "success") {
+            res.status(200).json(song);
+            return;
+        }
+        else {
+            res.status(404).json(
+                { status: "error" }
+            );
+        }
+    });  
 });
 
 /* GET songs listing. */
@@ -23,7 +22,6 @@ router.get('/', function (req, res, next) {
     dataAccess.getAll(function(status, songs){
         if (status === "success") {
             res.status(200).json(songs);
-            return;
         }
         else {
             res.status(404).json(
@@ -45,25 +43,31 @@ router.post('/', function (req, res, next) {
 });
 
 router.put('/:id', function (req, res, next) {
-    var result = dataAccess.editSong(req.params.id, req.body);
-    if (result.status == "success") {
-        res.status(204).json();
-        return;
-    }
-    else {
-        res.status(500).json();
-    }
+    dataAccess.editSong(req.params.id, req.body, function(status){
+        if (status == "success") {
+            res.status(204).json();
+        }
+        else if (status == 'not found'){
+            res.status(404).json();
+        }
+        else {
+            res.status(500).json();
+        }
+    });
 });
 
 router.delete('/:id', function (req, res, next) {
-    var result = dataAccess.deleteSong(req.params.id);
-    if (result.status == "success") {
-        res.status(204).json();
-        return;
-    }
-    else {
-        res.status(500).json();
-    }
+    dataAccess.deleteSong(req.params.id, function(status){
+        if (status == "success") {
+            res.status(204).json();
+        }
+        else if (status == 'not found'){
+            res.status(404).json();
+        }
+        else {
+            res.status(500).json();
+        }
+    });
 });
 
 module.exports = router;

@@ -72,72 +72,83 @@ var songs = [
 
 class dataAccess {
     getAll(callback) {
-        console.log('trying');
         SongModel.find((err, songs) => {
             if (err) throw err;
             callback('success', songs)
-          });
-    }
-    getSong(id) {
-        var song = songs.find((song) => {
-            return song.id === id;
         });
+    }
 
-        if (song === undefined || song === null) {
-            return { status: 'not found' };
-        }
-
+    getSong(id, callback) {
+        SongModel.findOne({ _id: id }, (err, song) => {
+            console.log(song);
+            if (err) {
+                callback('error');
+            }else if (song === undefined || song === null){
+                callback('not found' );
+            }
+            else{
+                callback("success", song);
+            }
+        });
+    }
+    
+    createSong(newSong) {
+        let song = new SongModel({
+            name: newSong.name,
+            artist: newSong.artist,
+            album: newSong.album,
+            year: newSong.year,
+            stars: newSong.stars,
+            author: newSong.author,
+            genre: newSong.genre,
+            producer: newSong.producer,
+            recordCompany: newSong.recordCompany,
+            imageUrl: newSong.imageUrl
+          });
+          
+          song.save();
         return { status: 'success', song: song }
     }
-    createSong(newSong) {
-        newSong.id = guid();
-        songs.push(newSong);
-        return { status: 'success', song: newSong }
-    }
 
-    editSong(id, editedSong) {
-        var song = songs.find((song) => {
-            return song.id === id;
+    editSong(id, editedSong, callback) {
+        SongModel.findOne({ _id: id }, (err, song) => {
+            if (err) {
+                callback('error');
+            }else if (song === undefined || song === null){
+                callback('not found');
+            }
+            else{
+                SongModel.findOneAndUpdate({_id: id}, {$set: editedSong }, {returnOriginal:false} , function(err){
+                    if(err){
+                        callback('error');
+                    }else{
+                        callback('success');
+                    }
+                });  
+            }
         });
-
-        if (song === undefined || song === null) {
-            return { status: 'not found' };
-        }
-
-        let objIndex = songs.findIndex((obj => obj.id === id));
-
-        //Update object's name property.
-        editedSong.id = id;
-        songs[objIndex] = editedSong;
-        console.log(songs[objIndex]);
-
-        return { status: 'success' };
     }
 
-    deleteSong(id) {
-        var song = songs.find((song) => {
-            return song.id === id;
+    deleteSong(id, callback) {
+        //Look for the given song
+        SongModel.findOne({ _id: id }, (err, song) => {
+            if (err) {
+                callback('error');
+            }else if (song === undefined || song === null){
+                callback('not found' );
+            }
+            else{
+                SongModel.deleteOne({ _id: id }, (err) => {
+                    if (err) {
+                        callback('error');
+                    }else{
+                        callback("success");
+                    }
+                });     
+            }
         });
-
-        if (song === undefined || song === null) {
-            return { status: 'not found' };
-        }
-
-        _.remove(songs, function (song) {
-            return song.id === id;
-        });
-        return { status: 'success' }
     }
 
-}
-
-function guid() {
-    function s4() {
-        return Math.floor((1 + Math.random()) * 0x10000)
-            .toString(16)
-            .substring(1);
-    }
-    return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
 }
 
 module.exports = new dataAccess()
