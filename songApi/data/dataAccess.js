@@ -70,14 +70,14 @@ var songs = [
 
 class dataAccess {
     getAll() {
-        return { status: 'success', songs: songs }
+        return { status: 'success', songs }
     }
     getSong(id) {
         var song = songs.find((song) => {
             return song.id === id;
         });
 
-        if (song === undefined || song === null) {
+        if (!song) {
             return { status: 'not found' };
         }
 
