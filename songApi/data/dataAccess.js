@@ -3,7 +3,7 @@ let SongModel = require('../models/songModel');
 let connection = require('./connection');
 var redis = require('redis');
 
-var client = redis.createClient(); //creates a new client
+var client = redis.createClient(6379, 'redis'); //creates a new client
 
 class dataAccess {
     getAll(callback) {
