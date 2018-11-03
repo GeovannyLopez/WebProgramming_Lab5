@@ -1,10 +1,17 @@
-version: '2'
+version: "3"
 services:
-  node-app:
-    build: ./app
+  frontend:
+    image: frontend-app
     ports:
-     - "8080:8080"
+      - "8000:5000"
+  backend:
+    image: backend-app
+    ports:
+      - "8080:8080"
     depends_on:
      - redis
+     - mongo
   redis:
     image: redis
+  mongo:
+    image: mongo
