@@ -46,7 +46,7 @@ class dataAccess {
         SongModel.findOne({ _id: id }, (err, song) => {
             if (err) {
                 callback('error');
-            }else if (song === undefined || song === null){
+            }else if (!song){
                 callback('not found');
             }
             else{

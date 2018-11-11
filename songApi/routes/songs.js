@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var createError = require('http-errors')
 const dataAccess = require('../data/dataAccess')
 
 /* GET specific song. */
@@ -10,9 +11,10 @@ router.get('/:id', function (req, res, next) {
             return;
         }
         else {
-            res.status(404).json(
+            next(createError(404))
+            /*res.status(404).json(
                 { status: "error" }
-            );
+            );*/
         }
     });  
 });
