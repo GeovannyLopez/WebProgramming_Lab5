@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const dataAccess = require('../data/dataAccess')
+var createError = require('http-errors')
 
 /* GET specific song. */
 router.get('/:id', function (req, res, next) {
@@ -10,9 +11,7 @@ router.get('/:id', function (req, res, next) {
             return;
         }
         else {
-            res.status(404).json(
-                { status: "error" }
-            );
+            next(createError(404));
         }
     });  
 });
@@ -24,9 +23,7 @@ router.get('/', function (req, res, next) {
             res.status(200).json(songs);
         }
         else {
-            res.status(404).json(
-                { status: "error" }
-            );
+            next(createError(404));
         }
     });
 });
@@ -38,7 +35,7 @@ router.post('/', function (req, res, next) {
         return;
     }
     else {
-        res.status(500).json();
+        next(createError(500));
     }
 });
 
@@ -48,10 +45,10 @@ router.put('/:id', function (req, res, next) {
             res.status(204).json();
         }
         else if (status == 'not found'){
-            res.status(404).json();
+            next(createError(404));
         }
         else {
-            res.status(500).json();
+            next(createError(500));
         }
     });
 });
@@ -62,10 +59,10 @@ router.delete('/:id', function (req, res, next) {
             res.status(204).json();
         }
         else if (status == 'not found'){
-            res.status(404).json();
+            next(createError(404));
         }
         else {
-            res.status(500).json();
+            next(createError(500));
         }
     });
 });
