@@ -1,5 +1,9 @@
 //Set up mongoose connection
 let mongoose = require('mongoose');
-mongoose.connect('mongodb://mongo:27017/web', { useNewUrlParser: true });
+var config = require('config');
+var dbConfig = config.get('Customer.dbConfig');
+
+
+mongoose.connect(dbConfig.host, { useNewUrlParser: true });
 
 module.exports = mongoose;

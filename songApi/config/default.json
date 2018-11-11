@@ -1,0 +1,15 @@
+{
+    "Customer": {
+      "dbConfig": {
+        "host": "mongodb://localhost:27017/web"
+      },
+      "redisConfig": {
+        "host": "localhost",
+        "port": "6379"
+      },
+      "credit": {
+        "initialLimit": 100,
+        "initialDays": 1
+      }
+    }
+  }

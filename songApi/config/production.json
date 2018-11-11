@@ -1,0 +1,13 @@
+{
+    "Customer": {
+      "dbConfig": {
+        "host": "mongodb://mongo:27017/web"
+      },
+      "redisConfig": {
+        "host": "redis"
+      },
+      "credit": {
+        "initialDays": 30
+      }
+    }
+  }
