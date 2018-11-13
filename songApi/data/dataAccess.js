@@ -6,7 +6,8 @@ var config = require('config');
 var redisConfig = config.get('Customer.redisConfig');
 
 
-var client = redis.createClient(redisConfig.port, redisConfig.host); //creates a new client
+//var client = redis.createClient(redisConfig.port, redisConfig.host); //creates a new client
+var client = redis.createClient(process.env.REDIS_PORT, process.env.REDIS_HOST); //creates a new client
 
 class dataAccess {
     getAll(callback) {
