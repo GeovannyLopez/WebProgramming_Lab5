@@ -29,14 +29,15 @@ router.get('/', function (req, res, next) {
 });
 
 router.post('/', function (req, res, next) {
-    var result = dataAccess.createSong(req.body);
-    if (result.status == "success") {
-        res.status(201).json(result.song);
-        return;
-    }
-    else {
-        next(createError(500));
-    }
+    var result = dataAccess.createSong(req.body, function(status, newSong){
+        if (status == "success") {
+            res.status(201).json(newSong);
+            return;
+        }
+        else {
+            next(createError(500));
+        }
+    });
 });
 
 router.put('/:id', function (req, res, next) {

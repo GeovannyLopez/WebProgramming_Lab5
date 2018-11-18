@@ -4,9 +4,18 @@ let Schema = mongoose.Schema;
 let songSchema = new Schema(
     {
         id: { type: String },
-        name: { type: String },
-        artist: { type: String },
-        album: { type: String },
+        name: { 
+            type: String,
+            required: true 
+        },
+        artist: { 
+            type: String,
+            required: true 
+        },
+        album: { 
+            type: String,
+            required: true 
+        },
         year: { type: Number },
         stars: { type: Number, min: 0, max: 5 },
         author: { type: String },

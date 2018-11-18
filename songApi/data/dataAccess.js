@@ -66,7 +66,7 @@ class dataAccess {
         });
     }
     
-    createSong(newSong) {
+    createSong(newSong, callback) {
         let song = new SongModel({
             name: newSong.name,
             artist: newSong.artist,
@@ -80,8 +80,15 @@ class dataAccess {
             imageUrl: newSong.imageUrl
           });
           
-          song.save();
-        return { status: 'success', song }
+          song.save(function(error){
+              if(error){
+                console.log(error);
+                callback('error');
+              }else{
+                callback('success', song);
+              }
+          });
+        
     }
 
     editSong(id, editedSong, callback) {
